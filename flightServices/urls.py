@@ -14,8 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls.conf import path, include
+from flightApp import views
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
+
+router = DefaultRouter()
+ #fliths is the router: flight/
+router.register('reservation', views.ReservationViewSet)
+router.register('passenger', views.PassengerViewSet)
+router.register('flights', views.FlightViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('flightServices/', include(router.urls)),
+    path('flightServices/findFlights/', views.find_flights),
+    path('flightServices/saveReservation/', views.save_reservation),
+    path('token-auth/', obtain_auth_token, name ="token-auth")
 ]
